@@ -1,0 +1,99 @@
+######################################################################
+# Database info 
+# @set database infomation
+#
+# Default values:
+# - db_host: localhost
+# - db_user: root
+# - db_pass: xxxxxxx
+# - db_name: acid_evo_cms
+#####################################################################
+
+db_host: 10.0.0.1
+db_user: root
+db_pass: 
+db_name: login-script
+
+#####################################################################
+# Site settings 
+# @set site information
+#
+# Default values:
+# - site_name: Your site name goes here
+# - domain_name: domain.com
+# - redirect_type: 2
+# - plugin_folder: /plugins
+# - timezone: Europe/Copenhagen
+#####################################################################
+
+site_name: Acid-Evo Cms System
+domain_name: domain.com
+redirect_type: 2
+plugin_folder: plugins
+timezone: Europe/Copenhagen
+default_language: Danish
+
+#####################################################################
+# reCaptcha setting
+# @load reCaptCha key
+# - PublicKey:
+# - PrivateKey:
+#####################################################################
+
+PublicKey: 6LfMuOgSAAAAAH6FR0Dzjol83x1ff6aEmRfGiaD3
+PrivateKey: 6LfMuOgSAAAAABiVw59JxZ6u-YZEvKMeXVFI__KM
+
+#####################################################################
+# mail settins
+# @set default mail settings
+#
+# Default Values:
+# - contact_mail: your_email@domain.com
+# - send_mail: no-reply@domain.com  
+#####################################################################
+
+use_activation_mail: true
+contact_email: you@yourdomain.com
+send_email: no-reply@yourdomain.com
+
+####################################################################
+# IRC settings  
+# @set default irc settings
+#
+# Default values:
+# - irc_host: irc.domain.com
+# - irc_port: 6667
+# - irc_chan: #community
+####################################################################
+
+irc_host: irc.domain.com
+irc_port: 6667
+irc_chan: #community
+
+####################################################################
+# Vent settings 
+# @set default ventrilo settings
+#
+# Default values:
+# - vent_host: domain.com
+# - vent_port: 3784
+####################################################################
+
+vent_host: domain.com
+vent_port: 3784
+
+###################################################################
+# various
+###################################################################
+
+clone_addr: https://github.com/gimli/raw_cms.git
+commit_log: https://github.com/gimli/raw_cms/commits/master
+
+cms_zip: https://github.com/gimli/raw_cms/archive/master.zip
+bug_report: https://github.com/gimli/raw_cms/issues
+
+#################
+# addons type   #
+#################
+
+addon_type:
