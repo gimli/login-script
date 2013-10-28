@@ -21,8 +21,6 @@ class Users extends Core{
 
     $salt = $r['salt'];
 
-    echo "Login recieved: ".$email." - ".$password;
-
     $password = self::generatePasswordHash($password, $salt);
     $q = $this->db->prepare("SELECT * FROM `account` WHERE `email` = '$email' AND `md5_encrypted_password` = '$password'");
     $q->execute();
@@ -51,9 +49,20 @@ class Users extends Core{
         setcookie('member', '', time() + 1*24*60*60);
         setcookie('member_id', '', time() + 1*24*60*60);
       }
+      echo "Succes!\r\n";
       $this->Core->redirect("index.php?login=success");      
     }else{
       die(WRONG_USER_PASS."\r\n");
+    }
+  }
+
+  public function userRegister($email, $username, $password){
+    $salt = "";
+  }
+
+  public function isLogged(){
+    if(isset($_SESSION['member_id'])){
+      return true;
     }
   }
 
@@ -72,5 +81,9 @@ class Users extends Core{
   */
   private static function generatePasswordHash($password, $salt){
     return md5(sha1($password, $salt));
+  }
+
+  public function lockIp(){
+    return $ip = $_SERVER['REMOTE_ADDR'] ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['HTTP_CLIENT_IP'];
   }
 }

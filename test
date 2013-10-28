@@ -14,21 +14,14 @@ $d = $Core::$Sql->prepare("SELECT * FROM `account` WHERE `email` = 'admin@isenga
 $d->execute();
 $d = $d->fetch();
 
-$Core->Users->userLogin('admin@isengard.dk','bjo10ern21');
-
 if($d['username']){
   echo "Yo ".$d['username']."\r\n";
 }
 
-echo "Please enter your username:\n";
-$strName = fread(STDIN, 80); // Read up to 80 characters or a newline
-echo "Please enter your password:\n";
-$strPass = fread(STDIN, 80);
+if(!$Core::$Users->isLogged()){
+  $Core::$Users->userLogin('admin@isengard.dk','bjo10ern21');
+}else{
+  echo "is logged";
+}
 
-$Core::$Users->userLogin($strName,$strPass);
-
-/*
-if(exec() == "Nickless"){ 
-  echo "Hi ".$q; 
-}*/
 ?>

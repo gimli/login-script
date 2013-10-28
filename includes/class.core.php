@@ -59,7 +59,7 @@ class Core{
    * @param $url
    */
   public function redirect($url) {
-      switch ($this->config['redirect_type']) {
+      switch ($this->Config['redirect_type']) {
           case 0:
               header("Location: {$url}");
               break;
