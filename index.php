@@ -2,10 +2,6 @@
 <?php
 include('./includes/header.php');
 
-$q = Core::$Sql->prepare("SELECT * FROM `account` WHERE `email` = 'admin@isengard.dk'");
-$q->execute();
-
-
 if(!Core::$Users->isLogged()){
   echo "Hi Guest :)!";
   echo "<a href='login.php'>login her</a>";
