@@ -72,8 +72,12 @@ class Core{
       }
   }
 
-  public function __destruct() {
-      $this->SQL = null;
+  public function update_repo() {
+    `git pull origin master`;
   }
+
+ // public function __destruct() {
+ //   $this->SQL = null;
+ // }
 }
 ?>

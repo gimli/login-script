@@ -9,7 +9,7 @@
 # - db_name: acid_evo_cms
 #####################################################################
 
-db_host: 10.0.0.1
+db_host: localhost
 db_user: root
 db_pass: 
 db_name: login-script
@@ -28,7 +28,7 @@ db_name: login-script
 
 site_name: Acid-Evo Cms System
 domain_name: domain.com
-redirect_type: 2
+redirect_type: 0
 plugin_folder: plugins
 timezone: Europe/Copenhagen
 default_language: Danish
