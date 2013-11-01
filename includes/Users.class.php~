@@ -103,13 +103,13 @@ class Users extends Core{
   }
 
   public function isLogged(){
-    if(isset(self::$userInfo()->id)){
+    if(isset(self::$userInfo())){
       return true;
     }
   }
 
   public function userInfo(){
-    if(isset(self::$userInfo()->id)){
+    if(isset($_SESSION['member_id'])){
       $u = $this->db->prepare("SELECT * FROM `account` WHERE `id` = ".$_SESSION['member_id']);
       $u->execute();
       if(!$u->rowCount()){
