@@ -54,7 +54,7 @@ class Users extends Core{
       }
       $this->Core->redirect("index.php?login=success");      
     }else{
-      die(WRONG_USER_PASS."\r\n");
+      die(WRONG_USER_PASS);
     }
   }
 
@@ -205,15 +205,11 @@ class Users extends Core{
   }
 
   public function random_string($counts){
+    if(!$counts){ $counts = 10; }
     $str = "abcdefghijklmnopqrstuvwxyz1234567890";
     for($i=0;$i<$counts;$i++){
-      if($o == 1){
-        $output .= rand(0,9);
-        $o = 0;
-      }else{
-        $o++;
-        $output .= $str[rand(0,25)];
-      }
+      if($o == 1){ $output .= rand(0,9); $o = 0; }
+      else{ $o++; $output .= $str[rand(0,25)]; }
     }
           return $output;
   }
