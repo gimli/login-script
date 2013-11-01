@@ -109,7 +109,7 @@ class Users extends Core{
   }
 
   public function userInfo(){
-    if(isset($_SESSION['member_id'])){
+    if(isset(self::$userInfo()->id)){
       $u = $this->db->prepare("SELECT * FROM `account` WHERE `id` = ".$_SESSION['member_id']);
       $u->execute();
       if(!$u->rowCount()){
