@@ -39,10 +39,39 @@ class Core{
     require_once("Users.class.php");
     $this->Users = new Users($this);
 
+
+    // Add ISPConfig III API support / Needs server side setup
+    // note we only load the connection for now complete class will be added later.
+    if($this->Config('useISPConfig') == "yes"){
+      $this->Soap = new SoapClient(null, 
+                                   array(
+                                     'location' => $this->Config('soapLocation'),
+                                     'uri' => $this->Confirg('soapUri'), 
+                                     'trace' => 1, 
+                                     'exceptions' => 1));
+    }
+
     // set $Sql using $this->db
     self::$Sql = $this->db;
     self::$Users = $this->Users;
+    self::$Soap = $this->Soap;
 
+    // fire up plugin's if any and enabled in config.
+    if($this->Config('enablePlugin') == "yes"){
+      if(is_dir($this->Config('plugin_folder'))){
+        if($files = opendir($this->Config('plugin_folder'))){
+          while($name = readdir($files)){
+            if($name != "."){
+              if($name != ".."){
+                require_once($name);
+                $this->$name = new $name($this);
+                self::$name = $this->name;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   /**

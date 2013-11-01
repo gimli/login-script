@@ -11,7 +11,7 @@
 
 db_host: localhost
 db_user: root
-db_pass: 
+db_pass: xxxxx
 db_name: login-script
 
 #####################################################################
@@ -34,12 +34,27 @@ timezone: Europe/Copenhagen
 default_language: Danish
 
 #####################################################################
+# ISPConfig III Settings
+# info will follow concerned about ispconfig settins
+# when its complete it will allow ispconfig owners to build there own
+# webhosting system using there own php coding. :)
+#####################################################################
+
+useISPConfig: yes
+soapLocation: https://domain.com:8080/remote/index.php
+soapUri: https://domain.com:8080/remote/
+
+ispConfigAdmin: admin
+ispConfigPass: xxxxx
+
+#####################################################################
 # reCaptcha setting
 # @load reCaptCha key
 # - PublicKey:
 # - PrivateKey:
 #####################################################################
 
+useRecaptCha: yes
 PublicKey: 6LfMuOgSAAAAAH6FR0Dzjol83x1ff6aEmRfGiaD3
 PrivateKey: 6LfMuOgSAAAAABiVw59JxZ6u-YZEvKMeXVFI__KM
 
