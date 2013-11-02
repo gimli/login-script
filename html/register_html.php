@@ -1,5 +1,5 @@
 <?php
- 
+include("./includes/header.php");
 // Need this little bit of PHP to show errors they encounter
 if (isset($_SESSION['errors'])) {
     echo $_SESSION['errors'];
@@ -42,6 +42,11 @@ if (isset($_SESSION['errors'])) {
         </tr>
         <tr>
            <td colspan="2">
+               <?php
+                 require_once("./includes/recaptchalib.php");
+                 $publickey = $Core->GetConfig('PublicKey'); // you got this from the signup page
+                 echo recaptcha_get_html($publickey);
+               ?>
                <input type="submit" value="Register" />
            </td>
         </tr>
