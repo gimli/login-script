@@ -19,6 +19,8 @@ class Users extends Core{
     $p->execute();
     $r = $p->fetch();
 
+    if($r['active'] == '0'){ $this->Core->redirect("login.php?e=account_not_active"); }
+
     $salt = $r['salt'];
 
     $password = self::generatePasswordHash($password, $salt);
@@ -31,7 +33,7 @@ class Users extends Core{
       $ip = self::determineIP();
       $r = self::loadObject($r);
 
-      if(!$r->id){ die("Something went wrong!"); }
+      if(!$r->id){ die("Error: undefined error upon login! - Please Contact our <a href='support.php?e=undefined'>Support</a> if this problem continues."); }
 
       $_SESSION['status'] = 'allowed';
       $_SESSION['member'] = $r->username;
@@ -95,15 +97,18 @@ class Users extends Core{
     $ip = self::determineIP();
 
     // Inject user 
-    $new_user = $this->db->prepare("INSERT INTO `account` (`email`,`username`,`md5_encrypted_password`,`salt`,`last_ip`) VALUES ('$email','$username','$hash','$salt','$ip')");
+    $new_user = $this->db->prepare("INSERT INTO `account` (`email`,`username`,`md5_encrypted_password`,`salt`,`last_ip`,`active`) VALUES ('$email','$username','$hash','$salt','$ip','1')");
     $new_user->execute();
-    if($new_user->rowCount() != 0) { $this->Core->redirect('login.php?e=register_success'); }
+    if($new_user->rowCount() != 0) { 
+      if($this->Core->GetConfig('EmailActivation') == "yes"){ self::mailRegister($email); }
+      $this->Core->redirect('login.php?e=register_success'); 
+    }
     else
     { $this->Core->redirect('login.php?e=register_failed'); }
   }
 
   public function isLogged(){
-    if(isset(self::$userInfo()->id)){
+    if(self::$userInfo()->id){
       return true;
     }
   }
@@ -112,9 +117,6 @@ class Users extends Core{
     if(isset($_SESSION['member_id'])){
       $u = $this->db->prepare("SELECT * FROM `account` WHERE `id` = ".$_SESSION['member_id']);
       $u->execute();
-      if(!$u->rowCount()){
-        die("Error: Unable to locate user id: ".$_SESSION['member_id']);
-      }
       $r = $u->fetch();
       $r = self::loadObject($r);
       return $r;
@@ -211,7 +213,33 @@ class Users extends Core{
       if($o == 1){ $output .= rand(0,9); $o = 0; }
       else{ $o++; $output .= $str[rand(0,25)]; }
     }
-          return $output;
+    return $output;
+  }
+
+  public function mailRegister($email){
+    $hash = self::random_string(15);
+    $hash = md5($hash);
+    $time = time();
+
+    $AddNewEntry = $this->db->prepare("INSERT INTO `email_activations` (`email`,`hash`,`time`) VALUES ('$email','$hash','$time')");
+    $AddNewEntry->execute();
+    if(!$AddNewEntry->rowCount()){ die(ERROR_UNABLE_TO_CREATE_NEW_LINK); }
+
+    $sender = $this->Core->GetConfig('sendmail');
+    $domain = $this->Core->GetConfig('domain_name');
+
+    $SetNotActive = $this->db->prepare("UPDATE `account` SET `active` = '0' WHERE `email` = ".$email);
+    $SetNotActive->execute();
+
+    $mail_to="$email";
+    $mail_subject="Email Activation";
+    $mail_body = "This is the email to activate your account.\n";
+    $mail_body.="Your activation code is: $hash \n";
+    $mail_body.="Click the following link to activate your account.\n";
+    $mail_body.="http://$domain/email-activation-script.php?email=$e&hash=$hash";
+    $sent = mail($mail_to,$mail_subject,$mail_body, "From: $sender");
+    $this->Core->redirect("location: login.php?e=Check_email_activation");
+
   }
 
 }

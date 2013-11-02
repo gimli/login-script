@@ -41,7 +41,7 @@ class Core{
 
 
     // Add ISPConfig III API support / Needs server side setup
-    // note we only load the connection for now complete class will be added later.
+    // note we only load the connection for now, complete class will be added later.
     if($this->Config('useISPConfig') == "yes"){
       $this->Soap = new SoapClient(null, 
                                    array(
@@ -63,7 +63,7 @@ class Core{
           while($name = readdir($files)){
             if($name != "."){
               if($name != ".."){
-                require_once($name);
+                require_once("./".$this->Config('plugin_folder')."/".$name);
                 $this->$name = new $name($this);
                 self::$name = $this->name;
               }
@@ -72,6 +72,22 @@ class Core{
         }
       }
     }
+    closedir($this->Config('plugin_folder'));
+
+    //initialize the post variable
+    if($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $this->post = $_POST;
+      if(get_magic_quotes_gpc ()) {
+        //get rid of magic quotes and slashes if present
+        array_walk_recursive($this->post, array($this, 'stripslash_gpc'));
+      }
+    }
+
+    //initialize the get variable
+    $this->get = $_GET;
+
+    //decode the url
+    array_walk_recursive($this->get, array($this, 'urldecode'));  
   }
 
   /**
@@ -81,6 +97,21 @@ class Core{
    */
   public static function GetConfig($i){
     return $this->Config[$i];
+  }
+
+  /**/
+  private function stripslash_gpc(&$value) {
+    $value = stripslashes($value);
+  }
+
+  /**/
+  private function htmlspecialcarfy(&$value) {
+    $value = htmlspecialchars($value);
+  }
+
+  /**/
+  protected function urldecode(&$value) {
+    $value = urldecode($value);
   }
 
   /**
@@ -105,8 +136,8 @@ class Core{
     `git pull origin master`;
   }
 
- // public function __destruct() {
- //   $this->SQL = null;
- // }
+  public function __destruct() {
+    $this->SQL = null;
+  }
 }
 ?>

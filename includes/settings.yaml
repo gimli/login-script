@@ -67,7 +67,7 @@ PrivateKey: 6LfMuOgSAAAAABiVw59JxZ6u-YZEvKMeXVFI__KM
 # - send_mail: no-reply@domain.com  
 #####################################################################
 
-use_activation_mail: true
+use_activation_mail: yes
 contact_email: you@yourdomain.com
 send_email: no-reply@yourdomain.com
 
@@ -84,6 +84,8 @@ send_email: no-reply@yourdomain.com
 irc_host: irc.domain.com
 irc_port: 6667
 irc_chan: #community
+
+webchatLink: http://domain.com/webchat
 
 ####################################################################
 # Vent settings 
